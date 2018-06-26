@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Chat Example</title>
+    <script src="p5.js"></script>
+    <script src="nkn.js"></script>
+    <script src="message.js"></script>
+
+    <style type="text/css">
+    html {
+      overflow: hidden;
+    }
+
+    body {
+      overflow: hidden;
+      padding: 0;
+      margin: 0;
+      width: 100%;
+      min-height: 100vh;
+      background: lightgray;
+    }
+
+    #log {
+      height: 55vh;
+      background-color: antiquewhite;
+      padding: 50px;
+      overflow: scroll;
+    }
+
+    #form {
+    }
+
+    </style>
+  </head>
+  <body>
+    <div id="myAddress">My address: </div>
+    <div id="log"></div>
+    <form id="form" enctype="multipart/form-data">
+      Message: <input type="text" id="msg" size="64"/>
+      <input id="fileupload" name="myfile" type="file"/><br/>
+      Recipient: <input type="text" id="sendTo" size="70"/>
+      <input type="submit" value="Send" />
+    </form>
+    <script>
+      var msg = msg();
+    </script>
+  </body>
+</html>
