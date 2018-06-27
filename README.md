@@ -1,4 +1,4 @@
-# DoraHack NKN Chat
+# DoraHacks NKN Chat Client
 
 The blockchain community is creating decentralized solutions for all
 kinds of problems, but we mostly chat on centralized platforms like
