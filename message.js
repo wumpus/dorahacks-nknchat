@@ -174,12 +174,12 @@ function msg(obj){
             } else {
 		alias = src.split('.', 2)[0];
 		if (alias in alias_users) {
-		    // XXX TESTME
 		    // generate a unique alias
-		    for (var alias_suffix = 0; alias_suffix < 100000; alias_suffix++) {
-			attempt = alias + alias_suffix.toString
+		    for (var alias_suffix = 1; alias_suffix < 100000; alias_suffix++) {
+			attempt = alias + alias_suffix.toString();
 			if (!(attempt in alias_users)) {
 			    alias = attempt;
+			    break;
 			}
 		    }
 		    if (alias in alias_users) {
