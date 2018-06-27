@@ -33,7 +33,7 @@
 
     #log {
       height: 65vh;
-      background: url("chatbubble.png") no-repeat center; 
+      background: url("chatbubble.png") no-repeat center;
       background-size : 30%;
       background-color: white;
       padding: 25px 50px 20px 50px;
@@ -58,22 +58,22 @@
     #recipient_div{
       padding: 15px;
     }
-    
+
 
     </style>
   </head>
   <body>
-    <div id="myAddress"><i class='fa fa-user-circle-o' aria-hidden='true'></i> My address: (Use address below to start communicating to your 
+    <div id="myAddress"><i class='fa fa-user-circle-o' aria-hidden='true'></i> My address: (Use address below to start communicating to your
       <font color="blue">friend</font> or your <font color="red">enemy</font>)
     </div>
     <div id="recipient_div">
-        
+
     </div>
     <hr id = 'top_hr'>
     <div id="log"></div>
     <hr id = 'bottom_hr'>
     <form id="form" enctype="multipart/form-data">
-      Message: <input type="text" id="msg" size="64"/>
+      Message: <input type="text" id="msg" size="64" autocomplete="off"/>
       <input type="submit" class="btn btn-primary" value="Send" /> <br />
       Recipient: <input type="text" id="sendTo" size="70"/>
       <input id="fileupload" name="myfile" type="file"/><br/>
