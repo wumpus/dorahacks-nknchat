@@ -205,7 +205,7 @@ function msg(obj){
         if (data.type && data.type.indexOf("/") >= 0){
           var type = data.type.split("/")[0];
         } else {
-          var type = "txt";
+          var type = data.type;
         }
         if (type === "image"){
           var item = document.createElement("div");
@@ -213,6 +213,13 @@ function msg(obj){
           item.appendChild(image);
           document.getElementById("log").appendChild(item);
           image.src = data.data;
+        }
+        if (type === "bitcoinAddress"){
+          var item = document.createElement("div");
+          var image = new Image();
+          item.appendChild(image);
+          document.getElementById("log").appendChild(item);
+          image.src = "https://chart.googleapis.com/chart?chs=400x400&cht=qr&chl="+data.data;
         }
         if (type === "video"){
           var item = document.createElement("div");
