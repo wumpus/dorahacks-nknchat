@@ -67,11 +67,37 @@ function msg(obj){
     // initilize log from localstorage
     try {
         var historyArr = JSON.parse(localStorage.getItem(history_key));
+	console.log('Found history in localStorage');
     } catch(e) {
+	console.log('Got an exception parsing the saved history, discarding it for', name);
 	localStorage.setItem(history_key, JSON.stringify([]));
         historyArr = [];
     }
+
+    var historyArrRev = historyArr.slice(0).reverse();
+    for (i = 0; i < historyArrRev.length; i++) {
+	entry = historyArrRev[i];
+	console.log('entry is', entry);
+	if (entry.includes(' will be known as ')) {
+	    // might be, be a little careful
+	    parts = entry.split(' will be known as ', 2);
+	    src = parts[0];
+	    alias = parts[1];
+	    console.log('considering making an alias for', alias);
+	    if (src.length < 60) {
+		console.log('skippig making an alias for length', alias, src);
+		continue;
+	    }
+	    if (!(src in user_aliases) && !(alias in alias_users)) {
+		console.log('making an alias', alias, src);
+		user_aliases[src] = alias;
+		alias_users[alias] = src;
+	    }
+	}
+    }
+
     if (historyArr.length > 100) {
+	cosole.log('Long history trimmed to 100');
 	l = historyArr.length;
         historyArr = historyArr.slice(l - 100, l);
 	localStorage.setItem(history_key, JSON.stringify(historyArr));
