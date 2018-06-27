@@ -50,7 +50,7 @@ function msg(obj){
   function history_append(message) {
       var string = localStorage.getItem(history_key);
       var historyArr = string.split(',');
-      historyArr.push(data.data);
+      historyArr.push(message);
       string = historyArr.toString();
       localStorage.setItem(history_key, string);
   }
@@ -74,7 +74,6 @@ function msg(obj){
       var item = document.createElement("div");
       item.innerText = "You: " + msg.value;
       appendLog(item);
-
       history_append("You: " + msg.value);
 
       msg.value = "";
@@ -198,11 +197,11 @@ function msg(obj){
 
             for (var i = 0; i < messages.length; i++) {
         	var item = document.createElement("div");
-        	item.innerText = alias + ": " + messages[i];
+		fulltext = alias + ": " + messages[i];
+        	item.innerText = fulltext
         	appendLog(item);
+		history_append(fulltext)
             }
-
-	    history_append(data.data)
           }
         }
       });
