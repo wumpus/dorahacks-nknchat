@@ -11,10 +11,37 @@ function gup( name, url ) { // https://stackoverflow.com/questions/979975/how-to
 }
 
 function msg(obj){
-  var client = nkn({
-    identifier: gup('name'),
-    seedRpcServerAddr: 'http://node00002.nkn.org:30003',
-  });
+  var name = gup('name');  
+  client_args = {identifier: name, seedRpcServerAddr: 'http://node00002.nkn.org:30003'};
+  savedKeys = localStorage.getItem('savedKeys '+name);
+  if (savedKeys != null) {
+      console.log('found savedKeys info of', savedKeys);
+      try {
+	  savedKeys = JSON.parse(savedKeys);
+	  console.log('found savedKeys for', name);
+      } catch {
+	  console.log('found savedKeys that failed to parse for', name);
+	  savedKeys = {};
+      }
+  } else {
+      console.log('no savedKeys seen for', name);
+      savedKeys = {};
+  }
+  if ('privateKey' in savedKeys) {
+      console.log('using the saved private key for', name);
+      client_args['privateKey'] = savedKeys['privateKey'];
+  }
+
+  var client = nkn(client_args);
+
+  if ('clientAddr' in savedKeys) {
+      if (client.addr != savedKeys['clientAddr']) {
+	  console.log('Surprised that the client addr changed for', name);
+      }
+  }
+  savedKeys = {privateKey: client.key.privateKey, clientAddr: client.addr};
+  localStorage.setItem('savedKeys '+name, JSON.stringify(savedKeys));
+
   history_key = 'history '+client.identifier;
 
   // now that I have my address, show it
