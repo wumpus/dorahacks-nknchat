@@ -60,12 +60,10 @@ function msg(obj){
       if (!sendTo.value) {
         return false;
       }
-      console.log('about to send a message to', sendTo.value)
       client.send(
         alias_to_user(sendTo.value),
         JSON.stringify({type: "txt", data: msg.value}),
       );
-      console.log('and client.send has returned.')
       var item = document.createElement("div");
       item.innerText = "You: " + msg.value;
       appendLog(item);
