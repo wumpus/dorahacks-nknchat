@@ -32,9 +32,9 @@
     }
 
     #log {
-      height: 70vh;
-      background: url("chatbubble.jpg") no-repeat center; 
-      background-size : 35%;
+      height: 65vh;
+      background: url("chatbubble.png") no-repeat center; 
+      background-size : 30%;
       background-color: white;
       padding: 25px 50px 20px 50px;
       overflow: scroll;
@@ -52,15 +52,13 @@
       margin-top : 0px;
       margin-bottom : 3px;
     }
-    #msg{
-      height : 50px;
-    }
     #myAddress{
       padding: 15px;
     }
     #recipient_div{
-      padding-left: 15px;
+      padding: 15px;
     }
+    
 
     </style>
   </head>
@@ -69,19 +67,15 @@
       <font color="blue">friend</font> or your <font color="red">enemy</font>)
     </div>
     <div id="recipient_div">
-      <form>
-        Recipient: <input type="text" id="sendTo" size="70"/>
-      </form>
+        
     </div>
     <hr id = 'top_hr'>
     <div id="log"></div>
     <hr id = 'bottom_hr'>
     <form id="form" enctype="multipart/form-data">
-      <div>
-        Message:
-      </div> 
-      <textarea rows="20" cols="80" id="msg"> </textarea>
-      <input type="submit" class="btn btn-primary" value="Send" />
+      Message: <input type="text" id="msg" size="64"/>
+      <input type="submit" class="btn btn-primary" value="Send" /> <br />
+      Recipient: <input type="text" id="sendTo" size="70"/>
       <input id="fileupload" name="myfile" type="file"/><br/>
     </form>
     <script>
