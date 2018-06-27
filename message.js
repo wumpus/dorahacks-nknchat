@@ -130,8 +130,17 @@ function msg(obj){
       if (!sendTo.value) {
         return false;
       }
+
+      final_addr = alias_to_user(sendTo.value);
+      if (final_addr.length < 60) {
+	  var item = document.createElement("div");
+	  item.innerText = "I don't know the alias "+sendTo.value;
+	  appendLog(item);
+	  return false;
+      }
+
       client.send(
-        alias_to_user(sendTo.value),
+        final_addr,
         JSON.stringify({type: "txt", data: msg.value}),
       );
       var item = document.createElement("div");
