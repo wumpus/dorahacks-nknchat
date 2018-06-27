@@ -12,5 +12,8 @@ This repo contains a web client for a chat system built on top of the
 NKN blockchain. We also have an Electron-based client (which is also a
 chatbot) and an iOS-based client.
 
-## Team Members
+## Team
+
+### Name: NKN-Weavers
+
 
