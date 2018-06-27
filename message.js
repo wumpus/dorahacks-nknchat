@@ -12,8 +12,7 @@ function gup( name, url ) { // https://stackoverflow.com/questions/979975/how-to
 
 function msg(obj){
   var client = nkn({
-    identifier: gup('name'),
-    seedRpcServerAddr: 'http://node00002.nkn.org:30003',
+    identifier: gup('name')
   });
   history_key = 'history '+client.identifier;
 
