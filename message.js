@@ -11,9 +11,38 @@ function gup( name, url ) { // https://stackoverflow.com/questions/979975/how-to
 }
 
 function msg(obj){
-  var client = nkn({
-    identifier: gup('name')
-  });
+
+  var name = gup('name');
+  client_args = {identifier: name};
+  savedKeys = localStorage.getItem('savedKeys '+name);
+  if (savedKeys != null) {
+      console.log('found savedKeys info of', savedKeys);
+      try {
+	  savedKeys = JSON.parse(savedKeys);
+	  console.log('found savedKeys for', name);
+      } catch {
+	  console.log('found savedKeys that failed to parse for', name);
+	  savedKeys = {};
+      }
+  } else {
+      console.log('no savedKeys seen for', name);
+      savedKeys = {};
+  }
+  if ('privateKey' in savedKeys) {
+      console.log('using the saved private key for', name);
+      client_args['privateKey'] = savedKeys['privateKey'];
+  }
+
+  var client = nkn(client_args);
+
+  if ('clientAddr' in savedKeys) {
+      if (client.addr != savedKeys['clientAddr']) {
+	  console.log('Surprised that the client addr changed for', name);
+      }
+  }
+  savedKeys = {privateKey: client.key.privateKey, clientAddr: client.addr};
+  localStorage.setItem('savedKeys '+name, JSON.stringify(savedKeys));
+
   history_key = 'history '+client.identifier;
 
   // now that I have my address, show it
@@ -34,11 +63,21 @@ function msg(obj){
   img.addEventListener('change', encodeImageFileAsURL);
   form.addEventListener('submit', submitForm);
   if (localStorage.getItem(history_key) === null) {
-    localStorage.setItem(history_key, [].toString());
+    localStorage.setItem(history_key, JSON.stringify([]))
   } else {
     // initilize log from localstorage
-    var string = localStorage.getItem(history_key);
-    var historyArr = string.split(',');
+    try {
+        var historyArr = JSON.parse(localStorage.getItem(history_key));
+    } catch(e) {
+	localStorage.setItem(history_key, JSON.stringify([]));
+        historyArr = [];
+    }
+    if (historyArr.length > 100) {
+	l = historyArr.length;
+        historyArr = historyArr.slice(l - 100, l);
+	localStorage.setItem(history_key, JSON.stringify(historyArr));
+    }
+
     for (var i = 0; i < historyArr.length; i++) {
       var item = document.createElement("div");
       item.innerText = historyArr[i];
@@ -47,11 +86,9 @@ function msg(obj){
   }
 
   function history_append(message) {
-      var string = localStorage.getItem(history_key);
-      var historyArr = string.split(',');
+      historyArr = JSON.parse(localStorage.getItem(history_key));
       historyArr.push(message);
-      string = historyArr.toString();
-      localStorage.setItem(history_key, string);
+      localStorage.setItem(history_key, JSON.stringify(historyArr));
   }
 
   function alias_to_user(a) {
@@ -187,7 +224,9 @@ function msg(obj){
 		alias_users[alias] = src;
 		user_aliases[src] = alias
 		var item = document.createElement("div");
-		item.innerText = src+" will be known as "+alias;
+		fulltext = src+" will be known as "+alias;
+		item.innerText = fulltext
+		history_append(fulltext);
 		appendLog(item);
 		if (!sendTo.value || sendTo.value == src) {
 		    sendTo.value = alias
@@ -199,7 +238,7 @@ function msg(obj){
 		fulltext = alias + ": " + messages[i];
         	item.innerText = fulltext
         	appendLog(item);
-		history_append(fulltext)
+		history_append(fulltext);
             }
           }
         }
