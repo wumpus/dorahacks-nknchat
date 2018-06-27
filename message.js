@@ -15,6 +15,7 @@ function msg(obj){
     identifier: gup('name'),
     seedRpcServerAddr: 'http://node00002.nkn.org:30003',
   });
+  history_key = 'history '+client.identifier;
 
   // now that I have my address, show it
   var newaddritem = document.createElement("div");
@@ -28,23 +29,30 @@ function msg(obj){
   var log = document.getElementById("log");
   var img = document.getElementById("fileupload");
   var form = document.getElementById("form");
-  var history = [];
   var user_aliases = {}
   var alias_users = {}
 
   img.addEventListener('change', encodeImageFileAsURL);
   form.addEventListener('submit', submitForm);
-  if (localStorage.getItem("history") === null) {
-    localStorage.setItem('history', history);
+  if (localStorage.getItem(history_key) === null) {
+    localStorage.setItem(history_key, [].toString());
   } else {
-    //initilize msg history
-    var string = localStorage.getItem('history');
+    // initilize log from localstorage
+    var string = localStorage.getItem(history_key);
     var historyArr = string.split(',');
     for (var i = 0; i < historyArr.length; i++) {
       var item = document.createElement("div");
       item.innerText = historyArr[i];
       appendLog(item);
     }
+  }
+
+  function history_append(message) {
+      var string = localStorage.getItem(history_key);
+      var historyArr = string.split(',');
+      historyArr.push(message);
+      string = historyArr.toString();
+      localStorage.setItem(history_key, string);
   }
 
   function alias_to_user(a) {
@@ -66,13 +74,7 @@ function msg(obj){
       var item = document.createElement("div");
       item.innerText = "You: " + msg.value;
       appendLog(item);
-
-      //store to localStorage
-      var string = localStorage.getItem('history');
-      var historyArr = string.split(',');
-      historyArr.push("localStorage history: "+msg.value);
-      string = historyArr.toString();
-      localStorage.setItem('history', string);
+      history_append("You: " + msg.value);
 
       msg.value = "";
       return false;
@@ -171,14 +173,22 @@ function msg(obj){
             } else {
 		alias = src.split('.', 2)[0];
 		if (alias in alias_users) {
-		    // generate a unique alias here
-		    console.log("NOT YET IMPLEMENTED");
-		} else {
-		    alias_users[alias] = src;
+		    // generate a unique alias
+		    for (var alias_suffix = 1; alias_suffix < 100000; alias_suffix++) {
+			attempt = alias + alias_suffix.toString();
+			if (!(attempt in alias_users)) {
+			    alias = attempt;
+			    break;
+			}
+		    }
+		    if (alias in alias_users) {
+			throw "failed to make a unique alias";
+		    }
 		}
+		alias_users[alias] = src;
 		user_aliases[src] = alias
 		var item = document.createElement("div");
-		item.innerText = src+"will be known as "+alias;
+		item.innerText = src+" will be known as "+alias;
 		appendLog(item);
 		if (!sendTo.value || sendTo.value == src) {
 		    sendTo.value = alias
@@ -187,18 +197,11 @@ function msg(obj){
 
             for (var i = 0; i < messages.length; i++) {
         	var item = document.createElement("div");
-        	item.innerText = alias + ": " + messages[i];
-		//item.setAttribute("style", "margin-left: 10px");
+		fulltext = alias + ": " + messages[i];
+        	item.innerText = fulltext
         	appendLog(item);
+		history_append(fulltext)
             }
-
-            //store to localStorage
-            var string = localStorage.getItem('history');
-            var historyArr = string.split(',');
-            historyArr.push(data.data);
-            string = historyArr.toString();
-            localStorage.setItem('history', string);
-
           }
         }
       });
