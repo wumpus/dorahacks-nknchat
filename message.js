@@ -35,11 +35,15 @@ function msg(obj){
   img.addEventListener('change', encodeImageFileAsURL);
   form.addEventListener('submit', submitForm);
   if (localStorage.getItem(history_key) === null) {
-    localStorage.setItem(history_key, [].toString());
+    localStorage.setItem(history_key, JSON.stringify([]))
   } else {
     // initilize log from localstorage
-    var string = localStorage.getItem(history_key);
-    var historyArr = string.split(',');
+    try {
+        var historyArr = JSON.parse(localStorage.getItem(history_key));
+    } catch(e) {
+	localStorage.setItem(history_key, JSON.stringify([]))
+        historyArr = [];
+    }
     for (var i = 0; i < historyArr.length; i++) {
       var item = document.createElement("div");
       item.innerText = historyArr[i];
@@ -48,11 +52,9 @@ function msg(obj){
   }
 
   function history_append(message) {
-      var string = localStorage.getItem(history_key);
-      var historyArr = string.split(',');
+      historyArr = JSON.parse(localStorage.getItem(history_key));
       historyArr.push(message);
-      string = historyArr.toString();
-      localStorage.setItem(history_key, string);
+      localStorage.setItem(history_key, JSON.stringify(historyArr));
   }
 
   function alias_to_user(a) {
@@ -188,7 +190,9 @@ function msg(obj){
 		alias_users[alias] = src;
 		user_aliases[src] = alias
 		var item = document.createElement("div");
-		item.innerText = src+" will be known as "+alias;
+		fulltext = src+" will be known as "+alias;
+		item.innerText = fulltext
+		history_append(fulltext);
 		appendLog(item);
 		if (!sendTo.value || sendTo.value == src) {
 		    sendTo.value = alias
@@ -200,7 +204,7 @@ function msg(obj){
 		fulltext = alias + ": " + messages[i];
         	item.innerText = fulltext
         	appendLog(item);
-		history_append(fulltext)
+		history_append(fulltext);
             }
           }
         }
