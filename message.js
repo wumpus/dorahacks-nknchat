@@ -41,9 +41,15 @@ function msg(obj){
     try {
         var historyArr = JSON.parse(localStorage.getItem(history_key));
     } catch(e) {
-	localStorage.setItem(history_key, JSON.stringify([]))
+	localStorage.setItem(history_key, JSON.stringify([]));
         historyArr = [];
     }
+    if (historyArr.length > 100) {
+	l = historyArr.length;
+        historyArr = historyArr.slice(l - 100, l);
+	localStorage.setItem(history_key, JSON.stringify(historyArr));
+    }
+
     for (var i = 0; i < historyArr.length; i++) {
       var item = document.createElement("div");
       item.innerText = historyArr[i];
