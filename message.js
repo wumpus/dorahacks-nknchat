@@ -19,9 +19,9 @@ function msg(obj){
 
   // now that I have my address, show it
   var newaddritem = document.createElement("div");
-  newaddritem.innerText = "My address: "+client.addr;
+  newaddritem.innerText = client.addr;
   var myAddress = document.getElementById("myAddress");
-  myAddress.replaceChild(newaddritem, myAddress.childNodes[0]);
+  myAddress.appendChild(newaddritem);
 
   var conn;
   var msg = document.getElementById("msg");
