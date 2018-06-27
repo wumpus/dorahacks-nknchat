@@ -29,16 +29,15 @@ function msg(obj){
   var log = document.getElementById("log");
   var img = document.getElementById("fileupload");
   var form = document.getElementById("form");
-  var history = [];
   var user_aliases = {}
   var alias_users = {}
 
   img.addEventListener('change', encodeImageFileAsURL);
   form.addEventListener('submit', submitForm);
   if (localStorage.getItem(history_key) === null) {
-    localStorage.setItem(history_key, history);
+    localStorage.setItem(history_key, [].toString());
   } else {
-    //initilize msg history
+    // initilize log from localstorage
     var string = localStorage.getItem(history_key);
     var historyArr = string.split(',');
     for (var i = 0; i < historyArr.length; i++) {
@@ -46,6 +45,14 @@ function msg(obj){
       item.innerText = historyArr[i];
       appendLog(item);
     }
+  }
+
+  function history_append(message) {
+      var string = localStorage.getItem(history_key);
+      var historyArr = string.split(',');
+      historyArr.push(data.data);
+      string = historyArr.toString();
+      localStorage.setItem(history_key, string);
   }
 
   function alias_to_user(a) {
@@ -68,12 +75,7 @@ function msg(obj){
       item.innerText = "You: " + msg.value;
       appendLog(item);
 
-      //store to localStorage
-      var string = localStorage.getItem(history_key);
-      var historyArr = string.split(',');
-      historyArr.push("localStorage history: "+msg.value);
-      string = historyArr.toString();
-      localStorage.setItem(history_key, string);
+      history_append("You: " + msg.value);
 
       msg.value = "";
       return false;
@@ -200,13 +202,7 @@ function msg(obj){
         	appendLog(item);
             }
 
-            //store to localStorage
-            var string = localStorage.getItem(history_key);
-            var historyArr = string.split(',');
-            historyArr.push(data.data);
-            string = historyArr.toString();
-            localStorage.setItem(history_key, string);
-
+	    history_append(data.data)
           }
         }
       });
