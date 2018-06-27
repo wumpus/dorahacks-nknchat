@@ -43,6 +43,7 @@ function msg(obj){
   savedKeys = {privateKey: client.key.privateKey, clientAddr: client.addr};
   localStorage.setItem('savedKeys '+name, JSON.stringify(savedKeys));
 
+
   history_key = 'history '+client.identifier;
 
   // now that I have my address, show it
