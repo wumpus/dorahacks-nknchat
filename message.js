@@ -187,7 +187,7 @@ function msg(obj){
 		alias_users[alias] = src;
 		user_aliases[src] = alias
 		var item = document.createElement("div");
-		item.innerText = src+"will be known as "+alias;
+		item.innerText = src+" will be known as "+alias;
 		appendLog(item);
 		if (!sendTo.value || sendTo.value == src) {
 		    sendTo.value = alias
@@ -197,7 +197,6 @@ function msg(obj){
             for (var i = 0; i < messages.length; i++) {
         	var item = document.createElement("div");
         	item.innerText = alias + ": " + messages[i];
-		//item.setAttribute("style", "margin-left: 10px");
         	appendLog(item);
             }
 
