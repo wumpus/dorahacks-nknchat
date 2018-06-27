@@ -2,6 +2,17 @@
 <html lang="en">
   <head>
     <title>Chat Example</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <script src="p5.js"></script>
     <script src="nkn.js"></script>
     <script src="message.js"></script>
@@ -17,29 +28,61 @@
       margin: 0;
       width: 100%;
       min-height: 100vh;
-      background: lightgray;
+      background: #90DBE1;
     }
 
     #log {
-      height: 55vh;
-      background-color: antiquewhite;
-      padding: 50px;
+      height: 70vh;
+      background: url("chatbubble.jpg") no-repeat center; 
+      background-size : 35%;
+      background-color: white;
+      padding: 25px 50px 20px 50px;
       overflow: scroll;
     }
 
     #form {
+      padding-left: 15px;
+    }
+
+    #top_hr{
+      margin-bottom : 0px;
+      margin-top : 3px;
+    }
+    #bottom_hr{
+      margin-top : 0px;
+      margin-bottom : 3px;
+    }
+    #msg{
+      height : 50px;
+    }
+    #myAddress{
+      padding: 15px;
+    }
+    #recipient_div{
+      padding-left: 15px;
     }
 
     </style>
   </head>
   <body>
-    <div id="myAddress">My address: </div>
+    <div id="myAddress"><i class='fa fa-user-circle-o' aria-hidden='true'></i> My address: (Use address below to start communicating to your 
+      <font color="blue">friend</font> or your <font color="red">enemy</font>)
+    </div>
+    <div id="recipient_div">
+      <form>
+        Recipient: <input type="text" id="sendTo" size="70"/>
+      </form>
+    </div>
+    <hr id = 'top_hr'>
     <div id="log"></div>
+    <hr id = 'bottom_hr'>
     <form id="form" enctype="multipart/form-data">
-      Message: <input type="text" id="msg" size="64"/>
+      <div>
+        Message:
+      </div> 
+      <textarea rows="20" cols="80" id="msg"> </textarea>
+      <input type="submit" class="btn btn-primary" value="Send" />
       <input id="fileupload" name="myfile" type="file"/><br/>
-      Recipient: <input type="text" id="sendTo" size="70"/>
-      <input type="submit" value="Send" />
     </form>
     <script>
       var msg = msg();
